@@ -577,21 +577,21 @@ def run_interactive():
             
 
             ############# Debugging output #############
-            # Print all messages for debugging
-            print("\n" + "="*70)
-            for m in result["messages"]:
-                m.pretty_print()
-            print("="*70)
+            # # Print all messages for debugging
+            # print("\n" + "="*70)
+            # for m in result["messages"]:
+            #     m.pretty_print()
+            # print("="*70)
             
 
             ############# Final output #############
-            # # Print only the final AI response (comment out the above to use this instead)
-            # print("\nGenomeGPT:", end=" ")
-            # final_message = result["messages"][-1]
-            # if hasattr(final_message, 'content'):
-            #     print(final_message.content)
-            # else:
-            #     print(str(final_message))
+            # Print only the final AI response (comment out the above to use this instead)
+            print("\nGenomeGPT:", end=" ")
+            final_message = result["messages"][-1]
+            if hasattr(final_message, 'content'):
+                print(final_message.content)
+            else:
+                print(str(final_message))
 
 
             # Show stored sequences count
