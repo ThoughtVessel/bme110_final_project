@@ -1,0 +1,48 @@
+name: bme110_final_project
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  # Python version
+  - python=3.11
+
+  # EMBOSS suite (bioinformatics tools)
+  - bioconda::emboss
+
+  # Core dependencies
+  - pip
+  - pip:
+      # LangChain and LangGraph
+      - langchain>=0.3.0
+      - langchain-openai>=0.2.0
+      - langchain-community>=0.3.0
+      - langchain-core>=0.3.0
+      - langgraph>=0.2.0
+
+      # OpenAI API
+      - openai>=1.0.0
+
+      # Database connectivity
+      - pymysql>=1.1.0
+
+      # HTTP requests
+      - requests>=2.31.0
+
+      # Utilities
+      - python-dotenv>=1.0.0
+      - pyfiglet>=0.8.0
+
+      # Type annotations
+      - typing-extensions>=4.0.0
+
+      # IPython (for display utilities)
+      - ipython>=8.0.0
+
+  # Development dependencies (optional)
+  # Uncomment for development work
+  # - pytest>=7.0.0
+  # - black>=23.0.0
+  # - flake8>=6.0.0
+  # - jupyter
