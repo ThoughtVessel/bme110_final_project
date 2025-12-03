@@ -465,7 +465,7 @@ def should_continue(state: MessagesState) -> Literal["tool_node", "__end__"]:
 
 
 ##################################################
-# Step 6: Build agent
+# Step 6: Build agent (with visualization showing individual tools)
 ###################################################
 # Build workflow
 agent_builder = StateGraph(MessagesState)
@@ -487,9 +487,42 @@ agent_builder.add_edge("tool_node", "llm_call")
 agent = agent_builder.compile()
 
 
-# Show the agent
+# # Show the agent with tools
+# # Note: The standard ToolNode doesn't expose individual tools in the graph
+# # xray=True shows the internal structure but tools are still grouped
 # with open("agent_graph.png", "wb") as f:
 #     f.write(agent.get_graph(xray=True).draw_mermaid_png())
+
+# # Create a custom visualization showing individual tools
+# # We'll create a separate graph just for visualization purposes
+# visualization_builder = StateGraph(MessagesState)
+# visualization_builder.add_node("llm_call", llm_call)
+
+# # Add individual tool nodes for visualization
+# for tool in tools:
+#     visualization_builder.add_node(f"{tool.name}", tool_node)
+
+# # Add edges
+# visualization_builder.add_edge(START, "llm_call")
+
+# # Add conditional edges showing each tool
+# visualization_builder.add_conditional_edges(
+#     "llm_call",
+#     should_continue,
+#     [f"{tool.name}" for tool in tools] + [END]
+# )
+
+# # Add edges back from each tool to llm_call
+# for tool in tools:
+#     visualization_builder.add_edge(f"{tool.name}", "llm_call")
+
+# # Compile and save the detailed visualization
+# visualization_agent = visualization_builder.compile()
+# with open("agent_graph_with_tools.png", "wb") as f:
+#     f.write(visualization_agent.get_graph(xray=True).draw_mermaid_png())
+
+
+
 
 # Interactive terminal interface
 def run_interactive():
@@ -544,21 +577,21 @@ def run_interactive():
             
 
             ############# Debugging output #############
-            # # Print all messages for debugging
-            # print("\n" + "="*70)
-            # for m in result["messages"]:
-            #     m.pretty_print()
-            # print("="*70)
+            # Print all messages for debugging
+            print("\n" + "="*70)
+            for m in result["messages"]:
+                m.pretty_print()
+            print("="*70)
             
-            
+
             ############# Final output #############
-            # Print only the final AI response (comment out the above to use this instead)
-            print("\nGenomeGPT:", end=" ")
-            final_message = result["messages"][-1]
-            if hasattr(final_message, 'content'):
-                print(final_message.content)
-            else:
-                print(str(final_message))
+            # # Print only the final AI response (comment out the above to use this instead)
+            # print("\nGenomeGPT:", end=" ")
+            # final_message = result["messages"][-1]
+            # if hasattr(final_message, 'content'):
+            #     print(final_message.content)
+            # else:
+            #     print(str(final_message))
 
 
             # Show stored sequences count
